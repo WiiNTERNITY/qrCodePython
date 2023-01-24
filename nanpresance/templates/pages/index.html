@@ -1,0 +1,312 @@
+{% extends 'bases/page_base.html' %}
+{% load qr_code %}
+
+{% block content %}
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard  {{user.profile.groupe.equipe}}  ${ patrick }</h1>
+        </div>
+
+        <!-- Content Row -->
+        <div class="row">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Etudiants</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"> {{nbr_etudiant}}  </div>
+                    </div>
+                    <div class="col-auto">
+                    <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Groupe</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"> {{groupes.all | length}}   </div>
+                    </div>
+                    <div class="col-auto">
+                    <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Présences</div>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{nbr_presant}} </div>
+                        </div>
+                        <div class="col">
+                        <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-auto">
+                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Absence</div>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"> {{ nbr_abs }} </div>
+                        </div>
+                        <div class="col">
+                        <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-auto">
+                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Content Row -->
+
+        <!-- Content Row -->
+        <div class="row">
+
+            <!-- Content Column -->
+            <div class="col-lg-8 mb-8">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Liste de présence</h6>
+                </div>
+                <div class="card-body">
+                 
+                <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Codev Qr</th>
+                        <th>Heure d'arrivee </th>
+                        <th>Heure depart </th>
+                        <th>Presant </th>
+                      
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                    <th>Nom</th>
+                    <th>Code Qr</th>
+                    <th>Heure d'arrivee </th>
+                    <th>Heure depart </th>
+                    <th>Presant </th>
+
+
+                      
+                    </tr>
+                </tfoot>
+                <tbody>
+                   
+                    {% for lst in liste_presence %}
+                    <tr>
+                        <td> {{lst.etudiant}} </td>
+                        <td>{{lst.qrcode}} </td>
+                        <td>{{lst.heure_arrivee}} </td>
+                        <td>{{lst.heure_depart}} </td>
+                        <td>{{lst.status}}</td>
+                     
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+                
+                </div>
+            </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+
+                <!-- Illustrations -->
+                <input type="hidden" id="isQr" value="{{isQr}}">
+                {% if isQr %}
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Code du jours  ${finQr}</h6>
+                    
+                    </div>
+                    <div v-if="showQr" class="card-header-pills text-center" >
+                       <h4>${myMin}:${mySec}</h4> 
+                    </div>
+                    
+                    <div class="card-body">
+                    <div v-if="showQr" class="text-center">
+                        <p id="dateQr">{{myQr.jours}}</p>
+                        {% qr_from_text  myQr.titre_slug  size="s" image_format="png" error_correction="L" %}
+                        <input type="hidden" id="debutQr" value={{myQr.debut_heure_arrivee}}>
+                        <input type="hidden" id="finQr" value={{myQr.fin_heure_arrivee}}>
+                        <input type="hidden"  value=" value={{myQr.jours}}">
+                    </div>
+                    <div v-if="!showQr" class="text-center">
+                        <img src="/static/img/undraw_security_o890.png" style="height: 150px;width: 200px;margin: 20px;text-align: center">
+                        <h4>Le code Qr est inactif </h4>
+                    </div>
+                        
+                    
+                    </div>
+                </div>
+                {% endif %}
+                {% if not isQr %}
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Code du jours ${ hDebutQr }</h6>
+                    </div>
+                    <div class="card-body">
+                    <div class="text-center">
+                        <div  style="display: inline;justify-content: space-around;">
+                           
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="text" value="09:00" v-model="hDebutQr" class="form-control form-control-user" id="exampleFirstName" placeholder="Ex:08:00">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" value="10:00" v-model="hFinQr" id="hDebutQr" class="form-control form-control-user" id="exampleLastName" placeholder="Ex:10:00">
+                                </div>
+                                </div>
+                                <button  @click.prevent="addQr" class="btn btn-primary btn-user btn-block">
+                                    Generate QrCode 
+                                </button>
+                           
+                        </div>
+                        <div class="lds-ripple"><div></div><div></div></div>
+                        <img src="/static/img/undraw_security_o890.png" style="height: 150px;width: 200px;margin: 20px;text-align: center">
+                        
+                        <p id="dateQr"> </p>
+                        <input type="hidden" id="debutQr" value="00:00">
+                        <input type="hidden" id="finQr" value="00:00">
+                        <input type="hidden"   value={{Qr.jours}}">
+                        <h4>Le code Qr est inactif </h4>
+                    </div>
+                    </div>
+                </div>
+                
+                {% endif %}
+        
+                     
+        
+                </div>
+
+            <!-- Color System -->
+           
+
+        </div>
+
+       
+
+        <div class="row">
+
+            <!-- Area Chart -->
+            <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Statistiques 7 dernier jours</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                    <div class="dropdown-header">Dropdown Header:</div>
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="myAreaChart"></canvas>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Pie Chart -->
+            <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Présence-Absence</h6>
+                <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                    <div class="dropdown-header">Dropdown Header:</div>
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div class="chart-pie pt-4 pb-2">
+                    <canvas id="myPieChart"></canvas>
+                </div>
+                <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                    <i class="fas fa-circle text-primary"></i> Direct
+                    </span>
+                    <span class="mr-2">
+                    <i class="fas fa-circle text-success"></i> Social
+                    </span>
+                    <span class="mr-2">
+                    <i class="fas fa-circle text-info"></i> Referral
+                    </span>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        </div>
+        <!-- /.container-fluid -->
+{% endblock %}

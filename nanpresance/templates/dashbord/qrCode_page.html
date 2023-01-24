@@ -1,0 +1,268 @@
+{% load qr_code  %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <title>Nan - Présence  | Not a Number  </title>
+        <meta content="Responsive admin theme build on top of Bootstrap 4" name="description" />
+        <meta content="Themesbrand" name="author" />
+        <!-- <link rel="shortcut icon" href="/static/assets/images/favicon.ico"> -->
+        <!-- fivicon  -->
+        <link rel="apple-touch-icon" sizes="57x57" href="/static/assets/images/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/static/assets/images/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/static/assets/images/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/images/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/static/assets/images/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/static/assets/images/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/static/assets/images/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/static/assets/images/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/static/assets/images/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="/static/assets/images/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="/static/assets/images/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/images/favicon-16x16.png">
+        <link rel="manifest" href="/static/assets/images/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+
+        <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="/static/assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
+        <link href="/static/assets/css/icons.css" rel="stylesheet" type="text/css">
+        <link href="/static/assets/css/style.css" rel="stylesheet" type="text/css">
+        <style>
+            /* loader css start */
+            .loader {
+                position: fixed;
+                z-index: 99;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: black;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        
+            .loader > img {
+                width: 100px;
+            }
+        
+            .loader.hidden {
+                animation: fadeOut 1s;
+                animation-fill-mode: forwards;
+            }
+        
+            @keyframes fadeOut {
+                100% {
+                    opacity: 0;
+                    visibility: hidden;
+                }
+            }
+        
+            .thumb {
+                height: 100px;
+                border: 1px solid black;
+                margin: 10px;
+            }
+            /* loader css end */
+            </style>
+            <script>
+                window.addEventListener("load", function () {
+                    const loader = document.querySelector(".loader");
+                    loader.className += " hidden"; // class "loader hidden"
+        
+                });
+           </script>
+    </head>
+
+    <body class="bg-primary">
+        <div class="loader">
+            <img src="/static/assets/icons/Nan-logo-fast.gif" alt="Loading..." />
+        </div>
+        <div class="home-btn d-none d-sm-block">
+            <a href="{% url 'scanner' %}" class="text-white"><i class="fas fa-home h2"></i></a>
+        </div>
+
+        <div class="account-pages my-5 pt-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div>
+                        <div class="card bg-pattern shadow-none">
+                            <div class="card-body" id="app">
+                                <div class="text-center mt-4">
+                                    <div class="mb-3">
+                                        <a href="{% url 'scanner' %}" class="logo"><img src="/static/assets/images/logo-nan.png" height="70" alt="logo"></a>
+                                                <input type="hidden" id="isQr" value="{{isQr}}">
+                                    </div>
+
+                                </div>
+                                {% if  isQr %}
+                                    {% if myQr.is_valid %}
+                                        <div class="mb-3">
+                                        <h2 id="dateQr" style="text-align: center;" >${myMin}min:${mySec}s </h2>
+                                        <h3 style="text-align: center;"> avant que le codeQr ne disparaisse</h3>
+                                    </div>
+                                <div class="p-3" id="hans"> 
+                                    
+                                        {% qr_from_text  myQr.titre_slug   size="m" image_format="png" error_correction="L" %}
+                                            <input type="hidden" id="debutQr" value={{myQr.debut_heure_arrivee}}>
+                                            <input type="hidden" id="finQr" value={{myQr.fin_heure_arrivee}}>
+                                            <input type="hidden"  value={{myQr.jours}}>
+                                </div>
+                                        {% endif %}
+                                {% endif %}
+                                {% if not myQr.is_valid  %}
+                                    <input type="hidden" id="debutQr" value={{myQr.debut_heure_arrivee}}>
+                                            <input type="hidden" id="finQr" value={{myQr.fin_heure_arrivee}}>
+                                            <input type="hidden"  value={{myQr.jours}}>
+                                <div class="md-4">
+                                    
+                                    <div class="text-center">
+                                        <img src="/static/img/undraw_security_o890.png" style="height: 250px;width: 250px;margin: 20px;text-align: center">
+                                        <h5 class="font-14">Le QrCode du jour est inactif  </h5>
+                                        <h5 class="font-14">Merci de venir a l'heure prochainement ... </h5>
+                                    </div>
+                                </div>
+                                {% endif %}
+                    
+                            </div>
+                        </div>
+                        <div class="mt-5 text-center text-white-50">
+                        
+
+                            <p>© 2020 NaN - Not A Number <i class="mdi mdi-heart text-danger"></i> by DevPython</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- jQuery  -->
+        <script src="/static/assets/js/jquery.min.js"></script>
+        <script src="/static/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="/static/assets/js/metismenu.min.js"></script>
+        <script src="/static/assets/js/jquery.slimscroll.js"></script>
+        <script src="/static/assets/js/waves.min.js"></script>
+        <script src="//cdn.56k.guru/js/croner/latest/croner.min.js"></script>
+
+        <!-- App js -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var app =new Vue({
+            el:'#app',
+            data:{
+                dateQr:'',
+                patrick:"patrick",
+                QrCode:"bonjour 2020",
+                base_url : '',
+                resultat:'hans',
+                result:'',
+                jour:'',
+                debutQr:document.getElementById('debutQr').value,
+                finQr:document.getElementById('finQr').value,
+                myMin:'',
+                mySec:'',
+                showQr:true,
+                hDebutQr:'',
+                hFinQr:'',
+                isQr:document.getElementById('isQr').value=='False'?false:true,
+                updatedCodeQr:false,
+                // dateToUpdate:document.getElementById('dateQr').innerHTML,
+                titre_slug:'',
+            },
+            delimiters:["${","}"],
+            mounted() {
+                this.chono()
+                this.base_url = window.location.protocol + '//' + window.location.host + '/'
+                this.jour = '{{jour}}'
+            },
+            methods:{
+                chono:function(){
+                    seconde_fin =  parseInt(this.finQr.split(":")[0])*3600+parseInt(this.finQr.split(":")[1]*60)
+                    date = new Date
+                    curentSeconde = date.getHours()*3600 + date.getMinutes()*60 + date.getSeconds()
+                    myChonoSec = seconde_fin - curentSeconde;
+                    this.myMin = Math.floor(myChonoSec/60)
+                    this.mySec = myChonoSec%60
+                    console.log(this.myMin,this.mySec,this.jour)
+                },
+                getqr(titre_slug,event) {
+                    this.titre_slug = titre_slug
+                    axios.defaults.xsrfCookieName = 'csrftoken'
+                    axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+                    console.log(titre_slug)
+                    axios({
+                        url: this.base_url + 'graphql',
+                        method: 'post',
+                        data: {
+                            query: `
+                            query{
+                                allQrcode(jours:"2020-01-23"){
+                                  edges{
+                                    node{
+                                      titreSlug,
+                                    }
+                                  }
+                                }
+                              }
+                    `
+                        }
+                    })
+                    .then(response => {
+                        this.loader=false
+                        this.result = response.data.data.allQrcode.edges[0]
+                        this.resultat = this.result.node.titreSlug
+                        console.log('dataaaaaaa gettttingggggggg')
+                        console.log(this.resultat)
+ 
+
+                    })
+                    .catch((err) => {
+                        this.loader=false
+                        console.log(err);
+                    })
+
+         },
+            }
+        })
+        if(app.isQr){
+            setInterval(
+                function(){
+                    if(app.mySec == 1){
+                        app.myMin--
+                        app.mySec=60
+                    }
+                    else{
+                        app.mySec --
+                    }
+                    if(app.myMin < 0 ){
+                        console.log("le temp est passe ",app.updatedCodeQr)
+                        location.reload();
+                    }
+                },1000
+            )
+        }
+
+    </script>
+    <script type="text/javascript"> 
+        Cron('*/60 * * * * *', function () {
+           location.reload();
+          // app.getqr('2020-02-03')
+           // app.titre_slug = app.resultat
+           // console.log(app.titre_slug)
+        //  console.log('This will run every fifth second'); 
+        });
+
+  // setInterval(function(){
+    // location.reload()
+      // console.log('gooooooooooooooooooooooooooooooooooooooooooooooooooooo')
+        //  },120000)
+      </script>
+    </body>
+</html>
